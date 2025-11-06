@@ -23,8 +23,8 @@ export function TodoList() {
   };
 
   return (
-    <div className=" w-full flex flex-col gap-1">
-      <div className="flex justify-between items-center border-b text-sm pb-1 ">
+    <div className="flex flex-col w-full gap-1 ">
+      <div className="flex items-center justify-between pb-1 text-sm border-b ">
         <h2 className="font-semibold">List Section</h2>
         <SortTodos />
       </div>

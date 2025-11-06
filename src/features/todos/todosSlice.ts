@@ -18,6 +18,7 @@ interface TodosState {
   filters: FiltersState;
   sortBy: SortOption;
   sortOrder: SortOrder;
+  editedTodo: Todo | null;
 }
 
 // ---------- actions ----------
@@ -93,6 +94,7 @@ const initialState: TodosState = {
   },
   sortBy: null,
   sortOrder: "asc",
+  editedTodo: null,
 };
 
 // ---------- slice ----------
@@ -100,12 +102,24 @@ const todosSlice = createSlice({
   name: "todos",
   initialState,
   reducers: {
+    setEditTodo: (state, action: PayloadAction<string>) => {
+      const todo = state.todos.find((t) => t.id === action.payload);
+      state.editedTodo = todo || null;
+    },
     addTodo: (state, action: PayloadAction<Todo>) => {
-      state.todos.push(action.payload);
+      state.todos.unshift(action.payload);
       saveTodos(state.todos);
       applyFilters(state);
     },
-
+    editTodo: (state, action: PayloadAction<Todo>) => {
+      const index = state.todos.findIndex((t) => t.id === action.payload.id);
+      if (index !== -1) {
+        state.todos[index] = action.payload;
+      }
+      saveTodos(state.todos);
+      state.editedTodo = null;
+      applyFilters(state);
+    },
     deleteTodo: (state, action: PayloadAction<string>) => {
       state.todos = state.todos.filter((t) => t.id !== action.payload);
       saveTodos(state.todos);
@@ -172,6 +186,8 @@ export const {
   setStatusFilter,
   setSortBy,
   setSortOrder,
+  setEditTodo,
+  editTodo,
 } = todosSlice.actions;
 
 export default todosSlice.reducer;

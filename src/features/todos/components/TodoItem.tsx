@@ -1,7 +1,11 @@
 import { Button } from "../../../components/ui/Button";
 import type { Todo } from "../types";
 import { useDispatch } from "react-redux";
-import { toggleTodo, deleteTodo as removeTodo } from "../todosSlice";
+import {
+  toggleTodo,
+  deleteTodo as removeTodo,
+  setEditTodo,
+} from "../todosSlice";
 import { useState } from "react";
 import { Modal } from "../../../components/ui/Modal";
 import { PriorityBadge } from "../../../components/ui/PriorityBadge";
@@ -50,12 +54,19 @@ export function TodoItem({ todo }: Props) {
               >
                 {todo.title}
               </h3>
-              <span className="cursor-cell" title={`edit ${todo.title}`}>
+              <span
+                className="cursor-cell"
+                title={`edit ${todo.title}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dispatch(setEditTodo(todo.id));
+                }}
+              >
                 ✏️
               </span>
             </div>
             <div className="flex flex-row items-center gap-2">
-              <span className="inline-block px-2 py-1 text-xs font-medium rounded-full border">
+              <span className="inline-block px-2 py-1 text-xs font-medium border rounded-full">
                 {new Date(todo.createdAt).toLocaleString()}
               </span>
               <PriorityBadge
