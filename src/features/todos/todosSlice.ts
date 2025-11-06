@@ -18,7 +18,6 @@ interface TodosState {
   filters: FiltersState;
   sortBy: SortOption;
   sortOrder: SortOrder;
-  selectedTodo: Todo;
 }
 
 // ---------- actions ----------
